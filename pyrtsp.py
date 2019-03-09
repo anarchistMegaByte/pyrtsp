@@ -27,13 +27,13 @@ Gst.init(None)
 mainloop = GObject.MainLoop()
 
 server = GstRtspServer.RTSPServer()
-
+server.set_address("192.168.5.1")
 mounts = server.get_mount_points()
 
 factory = GstRtspServer.RTSPMediaFactory()
-factory.set_launch('( videotestsrc is-live=1 ! x264enc speed-preset=ultrafast tune=zerolatency ! rtph264pay name=pay0 pt=96 )')
-
-mounts.add_factory("/test", factory)
+factory.set_launch('( autovideosrc device=/dev/video0 is-live=1 ! x264enc speed-preset=ultrafast tune=zerolatency ! rtph264pay name=pay0 pt=96 )')
+#factory.set_launch('(v4l2src device=/dev/video0 ! videoconvert ! x264enc)')
+mounts.add_factory("/test.mp4", factory)
 
 server.attach(None)
 
